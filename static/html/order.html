@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <script src="/js/order.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
+    <title>SurpriShip</title>
+</head>
+
+<body>
+    <header>
+        <a href="/about">About</a>
+        <a href="/admin/orders">Orders (Admin Only)</a>
+        <a href="/order">Place Order</a>
+    </header>
+    <div class="main-container">
+        <nav>
+        </nav>
+        <main class="order-container">
+            <h1>Place an Order</h1>
+
+            <button id="prefill">Prefill Form</button>
+
+            <form action="/order" method="POST">
+                <label for="product">Select a Product:</label>
+                <select id="product" name="product" required>
+                    <option value="" disabled selected hidden>-- Select a product --</option>
+                    <option value="apples">Apples - 2.5$</option>
+                    <option value="eggs">Eggs - 3$</option>
+                    <option value="milk">Milk - 4$</option>
+                </select>
+
+                <div id="quantity-section" style="display:none;">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                </div>
+
+                <h3>Order Summary</h3>
+                <p><strong>Total Cost:</strong> <span id="total-cost">$0.00</span></p>
+
+                <label for="buyer">Buyer Name:</label>
+                <input type="text" id="buyer" name="buyer" required>
+
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+
+                <p>Select a Shipping Option:</p>
+                <div class="shipping-option">
+                    <label for="flat">Flat Rate:</label>
+                    <input type="radio" id="flat" name="shipping" value="Flat Rate" checked>
+                </div>
+
+                <div class="shipping-option">
+                    <label for="ground">Ground:</label>
+                    <input type="radio" id="ground" name="shipping" value="Ground">
+                </div>
+
+                <div class="shipping-option">
+                    <label for="expedited">Expedited:</label>
+                    <input type="radio" id="expedited" name="shipping" value="Expedited">
+                </div>
+
+                <label for="order_date">Order Date:</label>
+                <input type="datetime-local" id="date" name="date" readonly>
+
+                <button type="submit">Submit</button>
+
+            </form>
+        </main>
+        <aside>
+        </aside>
+    </div>
+    <footer>
+        <!--Cool items to be added in the footer soon :)-->
+    </footer>
+</body>
+
+</html>

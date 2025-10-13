@@ -1,0 +1,306 @@
+:root {
+    --primary-color: rgb(205, 224, 232);
+    --secondary-color: rgb(0, 46, 81);
+    --tertiary-color: rgb(240, 170, 39);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    flex-basis: 5%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    background-color: var(--secondary-color);
+}
+
+/* I checked https://www.w3schools.com/css/css_border_shorthand.asp for some syntax */
+header>a {
+    background-color: rgb(242, 171, 40);
+    padding: 0.8rem 1.6rem;
+    margin: 0.5rem 1.3rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+header>a:hover {
+    color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+nav {
+    flex-basis: 0%;
+}
+
+main {
+    flex-basis: 100%;
+}
+
+main>h1 {
+    color: var(--secondary-color);
+    text-align: center;
+    font-size: 3em;
+    font-family: 'Knewave', sans-serif;
+}
+
+div.main-container {
+    flex-basis: 90%;
+    flex-grow: 1;
+    font-size: 16px;
+    display: flex;
+    background-color: var(--primary-color);
+}
+
+div.sub-main-container {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+}
+
+div.sub-main-container img {
+    flex-basis: 40%;
+    background-color: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+div.sub-main-container section {
+    flex-grow: 0;
+    /* The wierd thing is that it is 0 by default but if I removed this line, things break. This is strange */
+    flex-basis: calc(40% - 6rem);
+    background-color: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 3rem;
+    margin-bottom: 5px;
+}
+
+strong {
+    color: darkcyan;
+}
+
+em {
+    color: var(--tertiary-color);
+}
+
+/* watched this video to refresh : https://www.youtube.com/watch?v=eHaZlFcGl6k*/
+.staff-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5em;
+    text-align: center;
+}
+
+/* used this reference: https://www.w3schools.com/howto/howto_css_rounded_images.asp */
+.staff-member img {
+    width: 150px;
+    height: 150px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.staff-member img:hover {
+    transform: scale(1.01);
+}
+
+aside {
+    flex-basis: 0%;
+}
+
+footer {
+    flex-basis: 5%;
+    flex-shrink: 0;
+    background-color: var(--secondary-color);
+}
+
+/* All the above was for about.html, some of them were reused for other pages but the next ones are specific to orders management page */
+
+main.orders-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+table {
+    width: 70%;
+    height: 30%;
+    border-collapse: collapse;
+}
+
+main.orders-container table th {
+    padding: 1em;
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+main.orders-container table td {
+    padding: 1em;
+}
+
+table tr:nth-child(even) {
+    background-color: var(--tertiary-color);
+}
+
+table tr:nth-child(odd) {
+    background-color: white;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin: 1em;
+    padding: 1em;
+    background-color: white;
+    border-radius: 10px;
+    width: 55%;
+}
+
+input,
+select,
+button {
+    padding: 0.5em;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* found this: https://www.w3schools.com/cssref/pr_class_cursor.php really cool*/
+button {
+    background-color: var(--secondary-color);
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--tertiary-color);
+}
+
+/* Now some related to tracking page */
+
+div.sub-tracking-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.1em;
+    justify-content: center;
+}
+
+div.tracking-left-container {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+    text-align: center;
+    padding: 2em;
+}
+
+div.tracking-right-container {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+    text-align: center;
+    padding: 2em;
+}
+
+.status-box {
+    background-color: white;
+    width: 40%;
+    border-radius: 8px;
+    padding: 1.5em;
+}
+
+.status-box h2 {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.status-box p {
+    color: #666;
+    font-style: italic;
+}
+
+.details-box {
+    background-color: white;
+    border-radius: 8px;
+    width: 40%;
+    height: 80%;
+    padding: 1.5em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: left;
+}
+
+.details-box h3 {
+    text-align: center;
+    margin-bottom: 1em;
+    color: var(--secondary-color);
+}
+
+.order-details {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-details td {
+    padding: 0.5em 1em;
+    border: 1px solid #ddd;
+}
+
+/*Placing Order Page*/
+main.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main.order-container form {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    gap: 0.7em;
+}
+
+main.order-container form label {
+    text-align: left;
+}
+
+/* Order fail page*/
+main.order-status-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+main.order-status-container a {
+    background-color: rgb(242, 171, 40);
+    padding: 0.4rem 0.8rem;
+    margin: 0.25rem 0.7rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+main.order-status-container a:hover {
+    color: var(--secondary-color);
+    transform: scale(1.05);
+}
