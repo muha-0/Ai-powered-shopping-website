@@ -189,6 +189,10 @@ button:hover {
     background-color: var(--tertiary-color);
 }
 
+button:disabled {
+    background-color: #666;
+}
+
 /* Now some related to tracking page */
 
 div.sub-tracking-container {
@@ -260,6 +264,16 @@ div.tracking-right-container {
 .order-details td {
     padding: 0.5em 1em;
     border: 1px solid #ddd;
+}
+
+#update-form {
+    display: none;
+    flex-direction: column;
+    gap: 1em;
+}
+
+div.shipping-options label {
+    display: block;
 }
 
 /*Placing Order Page*/

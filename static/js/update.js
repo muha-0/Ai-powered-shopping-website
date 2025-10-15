@@ -7,15 +7,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // Countdown timer logic
     if (countdownEl && orderTimeEl) {
         const orderTime = new Date(orderTimeEl.textContent);
-        const shipDelayMs = 2 * 60 * 1000; // 2 minutes for testing
+        console.log(orderTime);
+        const shipDelayMs = 2 * 60 * 1000; // 2 minutes
         const shipTime = new Date(orderTime.getTime() + shipDelayMs);
-
+        console.log(shipTime);
         const updateCountdown = () => {
+            // This is wierd and I spent an hour debugging it
+            // using new Date() returns local time so I had to convert it to UTC
+            // I always prefer UTC because client can't be trusted
+            // They can change their local clock and fool me
             const now = new Date();
-            const diff = shipTime - now;
+            const nowUtc = new Date(
+                now.getTime() + now.getTimezoneOffset() * 60000
+            );
+            const diff = shipTime - nowUtc;
 
             if (diff <= 0) {
                 countdownEl.textContent = "Order Shipped!";
+                const cancelBtn = document.getElementById("cancel-btn");
+                const toggleBtn = document.getElementById("toggle-update");
+
+                toggleBtn.disabled = true;
+                cancelBtn.disabled = true;
+
+                document.getElementById("status-cell").textContent = "Shipped";
+
                 clearInterval(timer);
                 return;
             }
@@ -32,8 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Toggle update form
     if (toggleBtn && updateForm) {
         toggleBtn.addEventListener("click", () => {
-            const visible = updateForm.style.display === "block";
-            updateForm.style.display = visible ? "none" : "block";
+            const visible = updateForm.style.display === "flex";
+            updateForm.style.display = visible ? "none" : "flex";
             toggleBtn.textContent = visible ? "Update Shipping" : "Cancel Update";
         });
     }

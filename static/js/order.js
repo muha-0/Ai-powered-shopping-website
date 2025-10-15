@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const now = new Date();
     //reference: https://www.w3schools.com/jsref/jsref_slice_string.asp
-    const formattedDate = now.toISOString().slice(0, 16);
+    const formattedDate = now.toISOString().slice(0, 19);
     console.log(formattedDate);
     dateInput.value = formattedDate;
 

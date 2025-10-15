@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 orders = [
     {
@@ -58,7 +58,6 @@ orders = [
 ]
 
 # PUT YOUR GLOBAL VARIABLES AND HELPER FUNCTIONS HERE.
-
 
 def escape_html(s):
     s = s.replace("&", "&amp;")
@@ -122,6 +121,10 @@ def render_tracking(order):
     else:
         main_msg = "Your Order was Delivered"
         sec_msg = "Go grab it!"
+    
+    #.utcnow is deprecated but the only one that worked, there is a problem comparing naive dates and timezone based ones
+    if order['Status'] == "Placed" and datetime.utcnow()- datetime.fromisoformat(order_time) > timedelta(minutes=2):
+        order['Status'] = "Shipped"
 
     # because buttons shouldn't be visible for anything else
     show_actions = status == "Placed"
@@ -163,11 +166,11 @@ def render_tracking(order):
                             <table class="order-details">
                                 <tr><td><strong>Order ID:</strong></td><td>{order_id}</td></tr>
                                 <tr><td><strong>Product:</strong></td><td>{product}</td></tr>
-                                <tr><td><strong>Status:</strong></td><td>{status}</td></tr>
+                                <tr><td><strong>Status:</strong></td><td id = "status-cell">{status}</td></tr>
                                 <tr><td><strong>Cost:</strong></td><td>{cost}</td></tr>
                                 <tr><td><strong>Shipping:</strong></td><td>{shipping}</td></tr>
                                 <tr><td><strong>Address:</strong></td><td>{address}</td></tr>
-                                <tr><td><strong>Order Time:</strong></td><td id="order-time">{order_time}</td></tr>
+                                <tr><td><strong>Order Time:</strong></td><td><span id="order-time" style="display:none;">{order_time}</span>{order_time.replace("T"," ")}</td></tr>
                                 <tr><td><strong>Quantity:</strong></td><td>{quantity}</td></tr>
                             </table>
                         </section>
@@ -178,22 +181,25 @@ def render_tracking(order):
                             {"<p id='countdown'></p>" if show_actions else "<p>Order was Cancelled</p>" if status == "Cancelled" else "<p>Order already Shipped</p>"}
                         </section>
                         {f"""
-                        <h1>You can't update or cancel your order</h1>
+                        <section class = 'details-box'>
+                            <h3>You can't update or cancel your order</h3>
+                        </section>
                          """
                         if not show_actions else
                         f"""
                         <section class='details-box'>
                             <form action='/cancel_order' method='POST' style = 'display:inline;'>
                                 <input type='hidden' name='id' value='{order_id}'>
-                                <button type='submit'>Cancel Order</button>
+                                <button type='submit' id = 'cancel-btn'>Cancel Order</button>
                             </form>
 
                             <button id='toggle-update'>Update Shipping</button>
 
-                            <form id='update-form' action='/update_shipping' method='POST' style='display:none;'>
+                            <form id='update-form' action='/update_shipping' method='POST'>
                                 <input type='hidden' name='id' value='{order_id}'>
                                 <label for='address'>New Address:</label>
                                 <textarea id='address' name='address' required></textarea>
+                                <p>Select Shipping</p>
                                 <div class='shipping-options'>
                                     <label><input type='radio' name='shipping' value='Flat Rate' checked> Flat Rate</label>
                                     <label><input type='radio' name='shipping' value='Ground'> Ground</label>
@@ -219,94 +225,15 @@ def render_tracking(order):
     return html
 
 
-
-# def render_tracking(order):
-    
-#     order_id = escape_html(str(order['id']))
-#     product = escape_html(order['Products'])
-#     status = escape_html(order['Status'])
-#     cost = escape_html(order['Cost'])
-#     main_msg = ""; sec_msg =""
-#     if status == "Placed":
-#         main_msg = "Your Order is Placed"
-#         sec_msg = "Confirmed!!"
-#     elif status == "Shipped":
-#         main_msg = "Your Order is Being Shipped"
-#         sec_msg = "On its Way!!"
-#     elif status == "Cancelled":
-#         main_msg = "Your Order has Been Cancelled"
-#         sec_msg = "Either it was cancelled by you or it violated our policy"
-#     else:
-#         main_msg = "Your Order was Delivered"
-#         sec_msg = "Go Grab it!!"
-    
-#     html = f"""
-#     <!DOCTYPE html>
-#     <html lang="en">
-#     <head>
-#         <meta charset="UTF-8">
-#         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-#         <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
-#         <link rel="stylesheet" href="/main.css">
-#         <title>SurpriShip - Order Tracking</title>
-#     </head>
-#     <body>
-#         <header>
-#             <a href="/about">About</a>
-#             <a href="/admin/orders">Orders (Admin Only)</a>
-#             <a href="/order">Place Order</a>
-#         </header>
-#         <div class="main-container">
-#             <nav></nav>
-#             <main class="tracking-container">
-#                 <h1>Order Tracking</h1>
-                
-#                 <!-- Order status box -->
-#                 <section class="status-box">
-#                     <h2>{main_msg}</h2>
-#                     <p>{sec_msg}</p>
-#                 </section>
-
-#                 <!-- Order details -->
-#                 <section class="details-box">
-#                     <h3>Order Details</h3>
-#                     <table class="order-details">
-#                         <tr>
-#                             <td><strong>Order ID:</strong></td>
-#                             <td>{order_id}</td>
-#                         </tr>
-#                         <tr>
-#                             <td><strong>Product:</strong></td>
-#                             <td>{product}</td>
-#                         </tr>
-#                         <tr>
-#                             <td><strong>Status:</strong></td>
-#                             <td>{status}</td>
-#                         </tr>
-#                         <tr>
-#                             <td><strong>Cost:</strong></td>
-#                             <td>{cost}</td>
-#                         </tr>
-#                     </table>
-#                 </section>
-#             </main>
-#             <aside></aside>
-#         </div>
-#         <footer>
-#             <!--Cool items to be added in the footer soon :)-->
-#         </footer>
-#     </body>
-#     </html>
-#     """
-#     return html
-
-
 def render_orders(order_filters: dict[str, str]):
     query = order_filters.get("query", "").lower() 
     status_filter = order_filters.get("status", "all").lower()
     filtered_orders = []
     for order in orders:
         
+        if order["Status"] == "Placed" and datetime.utcnow()- datetime.fromisoformat(order["Order Time"]) > timedelta(minutes=2):
+            order["Status"] = "Shipped"
+
         if status_filter != "all" and order["Status"].lower() != status_filter:
             continue
 
